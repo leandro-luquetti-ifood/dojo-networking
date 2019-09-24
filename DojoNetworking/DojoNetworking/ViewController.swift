@@ -29,6 +29,21 @@ class ViewController: UIViewController {
         var urlSession = URLSession.init(configuration: .default, delegate: nil, delegateQueue: nil)
         socket = urlSession.webSocketTask(with: URL(string: "wss://echo.websocket.org")!)
         socket?.resume()
+        socket?.receive(completionHandler: { (result) in
+            switch result {
+            case .success(let valor):
+                switch valor {
+                case .data(_):
+                    print("data")
+                case .string(let texto):
+                    print(texto)
+                @unknown default:
+                    print("bla")
+                }
+            case .failure(let error):
+                print("deu ruim")
+            }
+        })
     }
 }
 
