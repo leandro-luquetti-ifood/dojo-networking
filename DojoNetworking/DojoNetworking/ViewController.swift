@@ -16,16 +16,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        openConnection()
     }
 
     @IBAction func vaiAction() {
-        print(textField.text!)
+        socket?.send(URLSessionWebSocketTask.Message.string(textField.text!), completionHandler: { (error) in
+            print(error)
+        })
     }
     
     func openConnection() {
         var urlSession = URLSession.init(configuration: .default, delegate: nil, delegateQueue: nil)
-        socket = urlSession.webSocketTask(with: URL(string: "ws://localhost:8080")!)
-        socket.
+        socket = urlSession.webSocketTask(with: URL(string: "wss://echo.websocket.org")!)
+        socket?.resume()
     }
 }
 
