@@ -40,10 +40,21 @@ class ViewController: UIViewController {
                 @unknown default:
                     print("bla")
                 }
-            case .failure(let error):
+            case .failure(_):
                 print("deu ruim")
             }
         })
+        
+        ping()
+    }
+    
+    func ping() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.socket?.sendPing(pongReceiveHandler: { error in
+                self.ping()
+                print("Send Ping \(error)")
+            })
+        }
     }
 }
 
